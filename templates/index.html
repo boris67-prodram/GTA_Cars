@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GTA V Cars Database</title>
+
+    <style>
+        .top-card-info {
+    color: #ff2b3d;
+    text-decoration: none;
+}
+
+.top-card-info:hover {
+    color: #ff2b3d;
+}
+
+        .car-banner {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    background: #0b0b0b;
+}
+
+.car-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.car-card:hover .car-banner img {
+    transform: scale(1.06);
+}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top, #242424 0%, #111 45%, #080808 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* ---------------- HEADER ---------------- */
+
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 2px solid #e63946;
+            padding: 25px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #e63946;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* ---------------- HERO ---------------- */
+
+        .hero {
+            max-width: 1400px;
+            margin: auto;
+            padding: 70px 25px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 82px);
+            font-weight: 1000;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            line-height: 1;
+        }
+
+        .hero h1 span {
+            color: #e63946;
+        }
+
+        .hero p {
+            margin-top: 20px;
+            color: #aaa;
+            font-size: 17px;
+        }
+
+        /* ---------------- SEARCH ---------------- */
+
+        .search-area {
+            max-width: 1100px;
+            margin: 30px auto 60px;
+            padding: 0 25px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+            background: #181818;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .search-box input,
+        .search-box select {
+            background: #101010;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 9px;
+            padding: 15px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+        .search-box input:focus,
+        .search-box select:focus {
+            border-color: #e63946;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+        }
+
+        .search-box input::placeholder {
+            color: #666;
+        }
+
+        .search-box select {
+            min-width: 180px;
+            cursor: pointer;
+        }
+
+        .search-button {
+            background: #e63946;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 0 25px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-button:hover {
+            background: #ff4757;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+        }
+
+        /* ---------------- STATS ---------------- */
+
+        .stats {
+            max-width: 1400px;
+            margin: 0 auto 50px;
+            padding: 0 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .stat {
+            background: linear-gradient(145deg, #1d1d1d, #111);
+            border: 1px solid #2d2d2d;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: 0.25s;
+        }
+
+        .stat:hover {
+            transform: translateY(-4px);
+            border-color: #e63946;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #e63946;
+        }
+
+        .stat-label {
+            margin-top: 7px;
+            color: #888;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ---------------- CAR GRID ---------------- */
+
+        .cars-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 25px 70px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .car-card {
+            position: relative;
+            background: linear-gradient(145deg, #202020, #111);
+            border: 1px solid #2d2d2d;
+            border-radius: 18px;
+            overflow: hidden;
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            border-color: #e63946;
+            box-shadow:
+                0 20px 45px rgba(0,0,0,0.55),
+                0 0 25px rgba(230,57,70,0.12);
+        }
+
+        .car-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(230,57,70,0.08),
+                transparent 45%
+            );
+            pointer-events: none;
+        }
+
+        /* ---------------- CARD CONTENT ---------------- */
+
+        .car-card h2,
+        .car-card h3 {
+            padding: 20px 20px 5px;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .car-card p {
+            padding: 0 20px;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .car-info {
+            padding: 15px 20px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .spec {
+            background: #0d0d0d;
+            border: 1px solid #272727;
+            border-radius: 10px;
+            padding: 11px;
+        }
+
+        .spec-label {
+            display: block;
+            color: #666;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .spec-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: #eee;
+        }
+
+        /* ---------------- CLASS BADGE ---------------- */
+
+        .class-badge {
+            display: inline-block;
+            margin: 18px 20px 0;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: rgba(230,57,70,0.12);
+            border: 1px solid rgba(230,57,70,0.35);
+            color: #ff6673;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ---------------- PRICE ---------------- */
+
+        .price {
+            padding: 0 20px 18px;
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .price::first-letter {
+            color: #e63946;
+        }
+
+        /* ---------------- VIEW BUTTON ---------------- */
+
+        .view-button {
+            display: block;
+            margin: 0 20px 20px;
+            padding: 13px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background: #e63946;
+            border-radius: 10px;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+
+        .view-button:hover {
+            background: #ff4757;
+            transform: translateY(-2px);
+        }
+
+        /* ---------------- NO RESULTS ---------------- */
+
+        .no-results {
+            max-width: 900px;
+            margin: 40px auto 100px;
+            padding: 60px 30px;
+            text-align: center;
+            border: 1px solid #2d2d2d;
+            border-radius: 18px;
+            background: #151515;
+            color: #777;
+            font-size: 18px;
+        }
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+            border-top: 1px solid #292929;
+            background: #0a0a0a;
+            padding: 30px;
+            text-align: center;
+            color: #555;
+            font-size: 13px;
+        }
+
+        /* ---------------- ANIMATION ---------------- */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .car-card {
+            animation: fadeUp 0.45s ease both;
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 1100px) {
+            .cars-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .cars-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box select,
+            .search-button {
+                width: 100%;
+                min-height: 48px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            header {
+                padding: 20px;
+            }
+
+            .hero {
+                padding-top: 45px;
+            }
+
+            .cars-grid {
+                grid-template-columns: 1fr;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .search-area {
+                padding: 0 15px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+        }
+        .search-box input:focus,
+        .search-box select:focus {
+            border-color: #e63946;
+        }
+
+        .search-button {
+            background: #e63946;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0 25px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-button:hover {
+            background: #ff4757;
+            transform: translateY(-2px);
+        }
+
+        /* ---------------- SECTION ---------------- */
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 0 25px 60px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-left: 5px solid #e63946;
+            padding-left: 15px;
+        }
+
+        .section-title h2 {
+            font-size: 28px;
+            text-transform: uppercase;
+        }
+
+        .count {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* ---------------- TOP CARS ---------------- */
+
+        .top-cars {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 70px;
+        }
+
+        .top-card {
+            position: relative;
+            background: linear-gradient(145deg, #242424, #111);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            overflow: hidden;
+            transition: 0.25s;
+        }
+
+        .top-card:hover {
+            transform: translateY(-6px);
+            border-color: #e63946;
+            box-shadow: 0 15px 35px rgba(230,57,70,0.15);
+        }
+
+        .rank {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            color: #e63946;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .car-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .top-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .manufacturer {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .speed {
+            margin-top: 15px;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .speed small {
+            color: #777;
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        /* ---------------- CAR GRID ---------------- */
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .car-card {
+            background: linear-gradient(145deg, #202020, #101010);
+            border: 1px solid #303030;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            border-color: #e63946;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+        }
+
+        .car-banner {
+            height: 145px;
+            background:
+                radial-gradient(circle at 50% 20%, #3b3b3b, #111 70%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 80px;
+            border-bottom: 1px solid #333;
+        }
+
+        .car-content {
+            padding: 22px;
+        }
+
+        .car-name {
+            font-size: 25px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .car-manufacturer {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .class-badge {
+            display: inline-block;
+            background: #e63946;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* ---------------- SPECS ---------------- */
+
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .spec {
+            background: #151515;
+            border: 1px solid #282828;
+            border-radius: 9px;
+            padding: 12px;
+        }
+
+        .spec-label {
+            color: #777;
+            font-size: 10px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .spec-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .car-description {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 18px 0;
+        }
+
+        .details-button {
+            display: block;
+            text-align: center;
+            background: transparent;
+            color: white;
+            border: 1px solid #444;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .details-button:hover {
+            background: #e63946;
+            border-color: #e63946;
+        }
+
+        /* ---------------- EMPTY ---------------- */
+
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #777;
+            font-size: 20px;
+        }
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+            background: #080808;
+            border-top: 1px solid #252525;
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            margin-top: 40px;
+        }
+
+        footer strong {
+            color: #e63946;
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 1100px) {
+            .top-cars {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .cars-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 20px;
+            }
+
+            .header-content {
+                display: block;
+                text-align: center;
+            }
+
+            .hero {
+                padding-top: 45px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
+                padding: 14px;
+            }
+
+            .top-cars {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .top-cars {
+                grid-template-columns: 1fr;
+            }
+        }
+      .car-icon {
+    height: 100px;
+    margin: 15px 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.car-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}  
+.top-card {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.top-card:hover {
+    text-decoration: none;
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div>
+            <div class="logo">
+                GTA <span>V</span> CARS
+            </div>
+            <div class="subtitle">
+                Complete Vehicle Database
+            </div>
+        </div>
+
+        <div class="subtitle">
+            LOS SANTOS • VEHICLE DATABASE
+        </div>
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <h1>
+        GTA V <span>Cars</span>
+    </h1>
+
+    <p>
+        Explore vehicles, performance statistics and specifications.
+    </p>
+
+</section>
+
+
+<div class="search-area">
+
+    <form method="GET" action="/">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search vehicle or manufacturer..."
+                value="{{ search }}"
+            >
+
+            <select name="class">
+
+                <option value="">All Classes</option>
+
+                {% for item in classes %}
+
+                    <option
+                        value="{{ item }}"
+                        {% if selected_class == item %}selected{% endif %}
+                    >
+                        {{ item }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <select name="sort">
+
+                <option value="name"
+                    {% if selected_sort == "name" %}selected{% endif %}>
+                    Name
+                </option>
+
+                <option value="speed"
+                    {% if selected_sort == "speed" %}selected{% endif %}>
+                    Top Speed
+                </option>
+
+                <option value="acceleration"
+                    {% if selected_sort == "acceleration" %}selected{% endif %}>
+                    Acceleration
+                </option>
+
+                <option value="price"
+                    {% if selected_sort == "price" %}selected{% endif %}>
+                    Price
+                </option>
+
+            </select>
+
+            <button class="search-button" type="submit">
+                SEARCH
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<div class="container">
+
+    <!-- TOP 10 -->
+
+    <div class="section-title">
+        <h2>🏆 Top 10 Fastest</h2>
+        <div class="count">
+            Fastest vehicles in the database
+        </div>
+    </div>
+
+
+   <div class="top-cars">
+
+    {% for car in top_cars %}
+
+    <div class="top-card">
+
+        <a href="/car/{{ car.id }}" class="top-card-info">
+            CLICK HERE FOR MORE INFORMATION
+        </a>
+
+        <a href="/car/{{ car.id }}" class="top-card-main">
+
+            <div class="rank">
+                #{{ loop.index }}
+            </div>
+
+            <div class="car-icon">
+                <img src="{{ car.image }}" alt="{{ car.name }}">
+            </div>
+
+            <div class="top-car-name">
+                <h3>{{ car.name }}</h3>
+
+                <div class="manufacturer">
+                    {{ car.manufacturer }}
+                </div>
+            </div>
+
+            <div class="speed">
+                {{ car.top_speed_mph }}
+                <small>MPH TOP SPEED</small>
+            </div>
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+   </div>
+
+
+    <!-- ALL CARS -->
+
+    <div class="section-title">
+
+        <h2>🚘 Vehicles</h2>
+
+        <div class="count">
+            {{ cars|length }} vehicles found
+        </div>
+
+    </div>
+
+
+    {% if cars %}
+
+    <div class="cars-grid">
+
+        {% for car in cars %}
+
+        <div class="car-card">
+
+           <div class="car-banner">
+    <img src="{{ car.image }}" alt="{{ car.name }}">
+</div>
+
+            <div class="car-content">
+
+                <div class="car-name">
+                    {{ car.name }}
+                </div>
+
+                <div class="car-manufacturer">
+                    {{ car.manufacturer }}
+                </div>
+
+                <div class="class-badge">
+                    {{ car["class"] }}
+                </div>
+
+
+                <div class="specs">
+
+                    <div class="spec">
+
+                        <div class="spec-label">
+                            Top Speed
+                        </div>
+
+                        <div class="spec-value">
+                            {{ car.top_speed_mph }} MPH
+                        </div>
+
+                    </div>
+
+
+                    <div class="spec">
+
+                        <div class="spec-label">
+                            0–100 MPH
+                        </div>
+
+                        <div class="spec-value">
+                            {{ car.zero_to_100_mph }} sec
+                        </div>
+
+                    </div>
+
+
+                    <div class="spec">
+
+                        <div class="spec-label">
+                            Drive
+                        </div>
+
+                        <div class="spec-value">
+                            {{ car.drive }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="spec">
+
+                        <div class="spec-label">
+                            Seats
+                        </div>
+
+                        <div class="spec-value">
+                            {{ car.seats }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="spec">
+
+                        <div class="spec-label">
+                            Price
+                        </div>
+
+                        <div class="spec-value">
+                            ${{ "{:,}".format(car.price) }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="spec">
+
+                        <div class="spec-label">
+                            Weight
+                        </div>
+
+                        <div class="spec-value">
+                            {{ car.weight_kg }} kg
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="car-description">
+
+                    {{ car.description }}
+
+                </div>
+
+
+                <a
+                    href="/car/{{ car.id }}"
+                    class="details-button"
+                >
+                    VIEW VEHICLE DETAILS →
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="no-results">
+
+        🔍 No vehicles found.
+
+        <br>
+
+        Try another search.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<footer>
+
+    <strong>GTA V CARS DATABASE</strong>
+
+    <br><br>
+
+    Fan-made vehicle database • Los Santos
+
+</footer>
+
+</body>
+</html>

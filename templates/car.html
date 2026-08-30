@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ car["name"] }} | GTA V Cars</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top right, #242424, #0b0b0b 60%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(8, 8, 8, 0.95);
+            border-bottom: 1px solid #292929;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #00ff88;
+        }
+
+        .nav a {
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #00ff88;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 25px 80px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #888;
+            text-decoration: none;
+            margin-bottom: 35px;
+        }
+
+        .back:hover {
+            color: #00ff88;
+        }
+
+        .car-hero {
+            background:
+                linear-gradient(135deg, #202020, #0e0e0e);
+            border: 1px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            height: 330px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle, #303030, #111 70%);
+            position: relative;
+        }
+
+       .hero-car {
+    width: 100%;
+    max-width: 650px;
+    height: 280px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 20px #000);
+}
+
+        .badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 8px 14px;
+            background: #00ff88;
+            color: #050505;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .car-info {
+            padding: 35px;
+        }
+
+        .manufacturer {
+            color: #00ff88;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: clamp(42px, 7vw, 75px);
+            line-height: 1;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 35px;
+        }
+
+        .specifications {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .spec {
+            background: #151515;
+            border: 1px solid #292929;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .spec-label {
+            display: block;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .spec-value {
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .green {
+            color: #00ff88;
+        }
+
+        .performance {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .performance-box {
+            background: #151515;
+            border: 1px solid #292929;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .performance-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: #aaa;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .bar {
+            height: 10px;
+            background: #292929;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            background: #00ff88;
+            border-radius: 20px;
+        }
+
+        .description {
+            margin-top: 25px;
+            padding: 30px;
+            background: #151515;
+            border: 1px solid #292929;
+            border-radius: 12px;
+        }
+
+        .description h2 {
+            margin-bottom: 15px;
+        }
+
+        .description p {
+            color: #999;
+            line-height: 1.7;
+        }
+
+        .bottom-back {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 13px 20px;
+            background: #00ff88;
+            color: #050505;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 900;
+        }
+
+        .bottom-back:hover {
+            background: white;
+        }
+
+        footer {
+            border-top: 1px solid #252525;
+            background: #090909;
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+
+            .specifications {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .performance {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                height: 230px;
+            }
+
+            .hero-car {
+                font-size: 100px;
+            }
+
+            .car-info {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .specifications {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 42px;
+            }
+        }
+        /* =========================================
+   GTA V RED THEME - CAR DETAILS
+   ========================================= */
+
+:root {
+    --accent: #e63946;
+}
+
+/* Основен фон */
+body {
+    background:
+        radial-gradient(circle at top, #242424 0%, #111 45%, #080808 100%);
+    color: #fff;
+}
+
+/* HEADER */
+header {
+    background: rgba(10, 10, 10, 0.95);
+    border-bottom: 2px solid #e63946 !important;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+}
+
+.logo span {
+    color: #e63946 !important;
+}
+
+/* Линк обратно */
+.back-link,
+.back,
+a.back-link {
+    color: #aaa !important;
+}
+
+.back-link:hover,
+.back:hover,
+a.back-link:hover {
+    color: #e63946 !important;
+}
+
+/* Основната карта */
+.car-detail,
+.vehicle-detail,
+.details-container,
+.detail-card {
+    background: #151515;
+    border-color: #303030;
+}
+
+/* HERO */
+.hero-image {
+    background:
+        radial-gradient(circle at center, #242424 0%, #111 70%);
+    border-color: #303030;
+}
+
+/* Снимка на автомобила */
+.hero-car {
+    width: 100%;
+    max-width: 650px;
+    height: 280px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.7));
+}
+
+/* Клас на автомобила */
+.badge {
+    background: #e63946 !important;
+    color: #fff !important;
+}
+
+/* Производител */
+.manufacturer,
+.brand,
+.car-manufacturer {
+    color: #e63946 !important;
+}
+
+/* Заглавие */
+.car-title,
+.car-name,
+h1 {
+    color: #fff;
+}
+
+/* Информационни карти */
+.stat,
+.stat-card,
+.spec,
+.spec-card,
+.info-card {
+    background: #151515;
+    border-color: #303030;
+}
+
+/* Стойности */
+.stat-value,
+.spec-value,
+.value {
+    color: #fff;
+}
+
+/* Основен акцент */
+.accent,
+.highlight,
+.green,
+.text-green {
+    color: #e63946 !important;
+}
+
+/* Progress bars */
+.progress-fill,
+.bar-fill {
+    background: #e63946 !important;
+}
+
+/* Бутони */
+button,
+.btn,
+.back-button,
+a.button {
+    background: #e63946 !important;
+    color: #fff !important;
+    border-color: #e63946 !important;
+}
+
+button:hover,
+.btn:hover,
+.back-button:hover,
+a.button:hover {
+    background: #c92f3b !important;
+    border-color: #c92f3b !important;
+}
+
+/* Карти при hover */
+.stat:hover,
+.stat-card:hover,
+.spec:hover,
+.spec-card:hover,
+.info-card:hover {
+    border-color: #e63946;
+}
+
+/* About */
+.about,
+.description,
+.about-card {
+    background: #151515;
+    border-color: #303030;
+}
+
+/* Мобилен размер */
+@media (max-width: 700px) {
+
+    .hero-car {
+        width: 100%;
+        max-width: 500px;
+        height: 200px;
+        object-fit: contain;
+    }
+
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="nav">
+
+        <div class="logo">
+            GTA <span>V</span> CARS
+        </div>
+
+        <a href="/">
+            VEHICLE DATABASE
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <a href="/" class="back">
+        ← BACK TO ALL VEHICLES
+    </a>
+
+
+   <div class="hero-image">
+
+    <img
+        class="hero-car"
+        src="{{ car['image'] }}"
+        alt="{{ car['name'] }}"
+    >
+
+    <div class="badge">
+        {{ car["class"] }}
+    </div>
+
+</div>
+
+
+        <div class="car-info">
+
+            <div class="manufacturer">
+                {{ car["manufacturer"] }}
+            </div>
+
+            <h1>
+                {{ car["name"] }}
+            </h1>
+
+
+            <div class="specifications">
+
+                <div class="spec">
+
+                    <span class="spec-label">
+                        Top Speed
+                    </span>
+
+                    <span class="spec-value green">
+                        {{ car["top_speed_mph"] }} MPH
+                    </span>
+
+                </div>
+
+
+                <div class="spec">
+
+                    <span class="spec-label">
+                        0-100 MPH
+                    </span>
+
+                    <span class="spec-value">
+                        {{ car["zero_to_100_mph"] }} SEC
+                    </span>
+
+                </div>
+
+
+                <div class="spec">
+
+                    <span class="spec-label">
+                        Drivetrain
+                    </span>
+
+                    <span class="spec-value">
+                        {{ car["drive"] }}
+                    </span>
+
+                </div>
+
+
+                <div class="spec">
+
+                    <span class="spec-label">
+                        Price
+                    </span>
+
+                    <span class="spec-value">
+                        ${{ "{:,}".format(car["price"]) }}
+                    </span>
+
+                </div>
+
+
+                <div class="spec">
+
+                    <span class="spec-label">
+                        Seats
+                    </span>
+
+                    <span class="spec-value">
+                        {{ car["seats"] }}
+                    </span>
+
+                </div>
+
+
+                <div class="spec">
+
+                    <span class="spec-label">
+                        Weight
+                    </span>
+
+                    <span class="spec-value">
+                        {{ car["weight_kg"] }} KG
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="performance">
+
+                <div class="performance-box">
+
+                    <div class="performance-title">
+
+                        <span>
+                            Top Speed
+                        </span>
+
+                        <strong class="green">
+                            {{ car["top_speed_mph"] }} MPH
+                        </strong>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="fill"
+                            style="width: {{ [car['top_speed_mph'] / 150 * 100, 100] | min }}%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="performance-box">
+
+                    <div class="performance-title">
+
+                        <span>
+                            Acceleration
+                        </span>
+
+                        <strong class="green">
+                            {{ car["zero_to_100_mph"] }} SEC
+                        </strong>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="fill"
+                            style="width: {{ [100 - car['zero_to_100_mph'] / 15 * 100, 5] | max }}%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="description">
+
+                <h2>
+                    About {{ car["name"] }}
+                </h2>
+
+                <p>
+                    {{ car["description"] }}
+                </p>
+
+            </div>
+
+
+            <a href="/" class="bottom-back">
+                ← BACK TO GARAGE
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    GTA V Cars Database
+    <br><br>
+
+    <strong>LOS SANTOS VEHICLE DATABASE</strong>
+
+</footer>
+
+</body>
+</html>
